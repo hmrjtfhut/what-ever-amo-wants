@@ -22,12 +22,12 @@
             position: absolute;
             bottom: 10px;
             left: 30%;
-            width: 150px;
+            width: 120px; /* 20% smaller than before */
             transition: transform 0.5s;
         }
         #car {
             position: absolute;
-            width: 200px;
+            width: 400px; /* 2x larger */
             bottom: 10px;
             left: -300px;
             transition: transform 1s;
@@ -40,6 +40,18 @@
             padding: 10px 20px;
             font-size: 16px;
             z-index: 10;
+        }
+        .car-button {
+            display: none;
+            position: absolute;
+            left: 50%;
+            bottom: 60px;
+            transform: translateX(-50%);
+            background-color: #ff0000;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            font-size: 16px;
         }
         @keyframes driveCar {
             0% {
@@ -63,7 +75,8 @@
 
     <div class="scene">
         <img id="charlotte" src="charlotte.png" alt="Charlotte">
-        <img id="car" src="car.png" alt="Car (Vendetta)">
+        <img id="car" src="car.png" alt="Car (Vendetta)" onclick="showCarButton()">
+        <button class="car-button" id="carButton">Why did you make me do this?</button>
     </div>
 
     <button onclick="startAnimation()">Vendetta, Go!</button>
@@ -71,6 +84,7 @@
     <script>
         const car = document.getElementById('car');
         const charlotte = document.getElementById('charlotte');
+        const carButton = document.getElementById('carButton');
 
         function startAnimation() {
             // Start the car animation
@@ -80,6 +94,10 @@
             setTimeout(() => {
                 charlotte.style.animation = 'charlotteHit 1s forwards';
             }, 1500); // Delay Charlotte's hit reaction until the car reaches her
+        }
+
+        function showCarButton() {
+            carButton.style.display = 'block'; // Show the "Why did you make me do this?" button when the car is clicked
         }
     </script>
 
