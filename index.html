@@ -32,6 +32,13 @@
             left: -300px;
             transition: transform 1s;
         }
+        #explosion {
+            position: absolute;
+            bottom: 10px;
+            left: -300px;
+            width: 300px;
+            display: none;
+        }
         button {
             position: absolute;
             top: 20px;
@@ -58,7 +65,17 @@
                 left: -300px;
             }
             100% {
-                left: 80%;
+                left: 30%; /* Adjust to stop near Charlotte */
+            }
+        }
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 1;
             }
         }
         @keyframes charlotteHit {
@@ -76,6 +93,7 @@
     <div class="scene">
         <img id="charlotte" src="charlotte.png" alt="Charlotte">
         <img id="car" src="car.png" alt="Car (Vendetta)" onclick="showCarButton()">
+        <img id="explosion" src="explosion.png" alt="Explosion">
         <button class="car-button" id="carButton">Why did you make me do this?</button>
     </div>
 
@@ -84,16 +102,24 @@
     <script>
         const car = document.getElementById('car');
         const charlotte = document.getElementById('charlotte');
+        const explosion = document.getElementById('explosion');
         const carButton = document.getElementById('carButton');
 
         function startAnimation() {
             // Start the car animation
             car.style.animation = 'driveCar 2s forwards';
 
-            // Charlotte's reaction after the car hits her
+            // Trigger the explosion and Charlotte's reaction after the car hits her
             setTimeout(() => {
+                // Hide the car and show explosion
+                car.style.display = 'none';
+                explosion.style.left = car.style.left; // Place explosion at car's position
+                explosion.style.display = 'block';
+                explosion.style.animation = 'explode 1s forwards';
+
+                // Charlotte gets hit
                 charlotte.style.animation = 'charlotteHit 1s forwards';
-            }, 1500); // Delay Charlotte's hit reaction until the car reaches her
+            }, 1500); // Delay until car reaches Charlotte
         }
 
         function showCarButton() {
