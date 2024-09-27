@@ -21,8 +21,8 @@
         #charlotte {
             position: absolute;
             bottom: 10px;
-            left: 30%;
-            width: 120px; /* 20% smaller than before */
+            left: 70%;
+            width: 120px; /* 20% smaller */
             transition: transform 0.5s;
         }
         #car {
@@ -34,10 +34,14 @@
         }
         #explosion {
             position: absolute;
-            bottom: 10px;
-            left: -300px;
-            width: 300px;
+            width: 200px;
+            height: 200px;
+            background-color: orange;
+            border-radius: 50%;
             display: none;
+            opacity: 0;
+            transform: scale(0);
+            transition: transform 0.5s, opacity 0.5s;
         }
         button {
             position: absolute;
@@ -65,7 +69,7 @@
                 left: -300px;
             }
             100% {
-                left: 30%; /* Adjust to stop near Charlotte */
+                left: 50%; /* Stop in the middle */
             }
         }
         @keyframes explode {
@@ -73,9 +77,15 @@
                 transform: scale(0);
                 opacity: 0;
             }
-            100% {
-                transform: scale(1.5);
+            50% {
+                transform: scale(2);
                 opacity: 1;
+                background-color: yellow;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+                background-color: red;
             }
         }
         @keyframes charlotteHit {
@@ -93,7 +103,7 @@
     <div class="scene">
         <img id="charlotte" src="charlotte.png" alt="Charlotte">
         <img id="car" src="car.png" alt="Car (Vendetta)" onclick="showCarButton()">
-        <img id="explosion" src="explosion.png" alt="Explosion">
+        <div id="explosion"></div>
         <button class="car-button" id="carButton">Why did you make me do this?</button>
     </div>
 
@@ -109,17 +119,23 @@
             // Start the car animation
             car.style.animation = 'driveCar 2s forwards';
 
-            // Trigger the explosion and Charlotte's reaction after the car hits her
+            // Trigger explosion and Charlotte's reaction after the car reaches the middle
             setTimeout(() => {
+                // Center explosion in the middle of the screen
+                const sceneWidth = document.querySelector('.scene').clientWidth;
+                const sceneHeight = document.querySelector('.scene').clientHeight;
+
+                explosion.style.left = `${(sceneWidth / 2) - (explosion.offsetWidth / 2)}px`;
+                explosion.style.bottom = `${(sceneHeight / 2) - (explosion.offsetHeight / 2)}px`;
+
                 // Hide the car and show explosion
                 car.style.display = 'none';
-                explosion.style.left = car.style.left; // Place explosion at car's position
                 explosion.style.display = 'block';
                 explosion.style.animation = 'explode 1s forwards';
 
                 // Charlotte gets hit
                 charlotte.style.animation = 'charlotteHit 1s forwards';
-            }, 1500); // Delay until car reaches Charlotte
+            }, 1500); // Delay until car reaches the middle
         }
 
         function showCarButton() {
